@@ -1,57 +1,79 @@
-This project implements a Minimum Viable Product (MVP) for a University Management System using core Java concepts, demonstrating object-oriented programming (OOP), multithreading, collections, file I/O, and custom exception handling across three integrated modules.
-Module	Core Features	Java Concepts Demonstrated
-1. Student Management	Registration, Viewing, Updating, Searching.	OOP (Inheritance/Polymorphism), Custom Exceptions, Collections (ArrayList).
-2. Course & Enrollment	Concurrent Enrollment Check, Capacity Management.	Multithreading with Synchronization (synchronized), Collections (HashMap).
-3. Examination & Grade	GPA Calculation, Transcript Generation.	I/O Streams (BufferedWriter) for reporting, Collections (TreeMap) for sorting, Enums (GradeLetter).
-Project Architecture:  The system follows a classic layered architecture (Model-Service-DAO-Controller) implemented entirely in Java.Package StructurePackagePurposeKey Filescom.university.modelEntity classes and OOP hierarchy.Student, UndergraduateStudent, GraduateStudent.com.university.daoIn-memory data persistence (Collections).StudentDAO, CourseDAO, EnrollmentDAO.com.university.serviceBusiness logic and calculation (e.g., GPA, thread-safe enrollment).StudentService, EnrollmentService, GradeService.com.university.controllerHandles console I/O and orchestrates service calls.StudentController, GradeController.com.university.exceptionCustom exceptions for business rules.StudentNotFoundException, CourseFullException, etc.com.university.utilUtilities for reporting and calculations.ReportGenerator, GradeCalculator.
+Intelligent University Management System (UMS) MVP
+Project Overview
+This project implements a Minimum Viable Product (MVP) for a console-based University Management System (UMS) using pure Java. It is designed to demonstrate proficiency in fundamental and advanced Java concepts, including OOP principles (Inheritance, Polymorphism), Multithreading with Synchronization, Custom Exception Handling, and File I/O.
+The system integrates three core academic modules, providing essential management functions for students, courses, and grades.
+
+Key Features
+The UMS MVP delivers the following functional and conceptual features:
+Core Modules
+Student Management (Module 1): Full CRUD (Create, Read, Update, Delete) cycle for student profiles, supporting inheritance for different student types (UndergraduateStudent, GraduateStudent).
+Course & Enrollment (Module 2): Manages course capacities and implements a thread-safe enrollment system.
+Grade Management (Module 3): Handles grade entry, GPA computation, and academic transcript generation.
+Conceptual Demos
+Multithreading: Features a Concurrent Enrollment Demo (Option 3.4) utilizing the synchronized keyword to prevent race conditions and ensure thread-safe resource management.
+OOP: Uses an abstract Student class with polymorphic calculateTuitionFee() implementations.
+I/O Streams: Generates comprehensive academic transcripts to a local file using java.io.BufferedWriter.
+Collections: Extensive use of ArrayList, HashMap, and TreeMap (for sorted grade reports).
+Custom Exceptions: Implements business logic exceptions like StudentNotFoundException and CourseFullException.
+
+Technologies/Tools Used
+CategoryTechnology/Tool Notes Language Java Core development language (JDK 8+).Architecture Layered (MVC-style)Separates concerns into Model, DAO, Service, and Controller layers.Persistence In-Memory Collections Data stored in ArrayList and HashMap for fast MVP testing (can be switched to JDBC/JPA easily).Interface Console (Command Line) Simple, text-based interactive menu system. 
+
+Steps to Install & Run the Project
+The project is designed to run directly using the Java Development Kit (JDK) from the command line.
+
 Prerequisites
-Java Development Kit (JDK): Version 8 or higher.
-A Java IDE: VS Code (with Java Extension Pack) or IntelliJ IDEA.
-Installation and Setup
+Java Development Kit (JDK) 8 or newer installed on your system.
+
+Running Instructions
 1. Clone the Repository:
+Bash
 git clone [YOUR_REPOSITORY_URL]
 cd UniversityManagementSystem
-2. Compile and Run (Manual): Navigate to the src/main/java directory:
+2. Navigate to Source: Move into the directory containing your package structure:
 Bash
 cd src/main/java
-Compile all files:
+3. Compile the Code: Compile all necessary Java files. (Ensure you run this command successfully with no errors.)
 Bash
-javac com/university/Main.java com/university/controller/*.java com/university/service/*.java com/university/dao/*.java com/university/model/*.java com/university/exception/*.java com/university/enums/*.java com/university/util/*.java
-Run the application:
+javac com/university/Main.java com/university/controller/*.java com/university/service/
+4. Execute the Application: Run the compiled Main class:
 Bash
 java -cp . com.university.Main
-4. Core Demos (Must-Run Scenarios)
-The following options demonstrate the key technical requirements of the MVP.
-A. OOP & Polymorphism Demo (Module 1)
-This demonstrates the inheritance hierarchy and how tuition calculation differs based on the student type
-Go to 1. Student Management.
-Run 1.1 Register New Student (Register one Undergraduate, one Graduate (RA=No)).
+
+Instructions for Testing
+Use the following test cases to demonstrate the core functionality and technical requirements.
+
+Test 1: Multithreading & Synchronization Demo
+This is the primary test for Module 2.
+
+From the Main Menu, choose 3. Enrollment Management.
+
+Choose 3.4 RUN CONCURRENT ENROLLMENT DEMO.
+
+Expected Result: The system will attempt to enroll 10 students into a course with limited capacity. The output must show that only the available spots were filled, with the remaining attempts failing with a CourseFullException. This verifies the thread-safe synchronized block is working.
+
+Test 2: I/O Streams & GPA Calculation Demo
+This demonstrates the file writing and complex calculation requirements.
+
+From the Main Menu, choose 4. Grade Management.
+
+Choose 4.4 RUN GRADE DEMO (Setup Grades for S001). (This automatically registers student S001, enrolls them, and records a high grade.)
+
+Choose 4.2 Calculate Student GPA (Enter ID S001).
+
+Choose 4.3 Generate Transcript (I/O Demo) (Enter ID S001).
+
+Expected Result:
+
+4.2 should display a high GPA (e.g., 4.00).
+
+4.3 should confirm "Transcript generated successfully". Check the project root for the reports/S001_transcript.txt file.
+
+Test 3: OOP/Polymorphism Demo
+From the Main Menu, choose 1. Student Management.
+
+Run 1.1 Register New Student: Register one Undergraduate and one Graduate student.
+
 Run 1.4 List All Students.
-Verify: Undergraduate students show a different tuition fee calculation than Graduate students.
-B. Multithreading & Synchronization Demo (Module 2)
-This demonstrates thread safety by ensuring only one thread can modify the course enrollment count at a time, preventing over-enrollment.
-Go to 3. Enrollment Management.
-Run 3.4 RUN CONCURRENT ENROLLMENT DEMO.
-Scenario: The demo attempts to enroll 10 students into Course CS201 (max capacity 3, 2 spots are already taken).
-Verify: Exactly one student succeeds in enrolling (filling the final spot), and the remaining 9 fail with a CourseFullException. The final count remains 3/3.
-C. I/O Stream Report Generation Demo (Module 3)
-This demonstrates data processing and writing output to the file system using Java I/O Streams.
-Go to 4. Grade Management.
-Run 4.4 RUN GRADE DEMO (Setup Grades for S001). (This registers a student and gives them an 'A' in course C101).
-Run 4.2 Calculate Student GPA (Use Student ID S001).
-Verify: The GPA should be 4.00.
-Run 4.3 Generate Transcript (I/O Demo) (Use Student ID S001).
-Verify: A new file named reports/S001_transcript.txt is created in the project root directory, containing the student's header and grade details.
-5. Deliverables Status
-Deliverable	Status	Completion Notes
-Code Implementation	✅ Complete	All 3 modules and core Java concepts implemented.
-README.md	✅ Complete	(This file)
-UML Diagrams	❌ Missing	Must be generated and placed in the docs/diagrams folder.
-Project Report	❌ Missing	Required 15-section PDF report detailing design and challenges.
-JDBC/JPA Layer	⚠️ In-Memory	Data access uses Collections (in-memory) instead of persistent database.
 
-
-
-
-
-
+Expected Result: The FEE (Demo) column will show different values for the Undergraduate and Graduate students, demonstrating the polymorphic calculateTuitionFee() method.
